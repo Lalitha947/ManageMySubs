@@ -1,0 +1,295 @@
+import { FiBriefcase, FiUsers, FiHeart, FiTarget, FiMapPin, FiDollarSign, FiArrowRight } from 'react-icons/fi'
+
+function Careers() {
+  const jobOpenings = [
+    {
+      id: 1,
+      title: "Senior Frontend Developer",
+      department: "Engineering",
+      location: "Remote",
+      type: "Full-time",
+      salary: "$90k - $120k",
+      description: "We're looking for a passionate frontend developer to help build the next generation of subscription management tools.",
+      requirements: ["5+ years React experience", "TypeScript expertise", "UI/UX design sensibility"],
+      benefits: ["Health insurance", "Flexible hours", "Professional development budget"]
+    },
+    {
+      id: 2,
+      title: "Product Manager",
+      department: "Product",
+      location: "New York, NY",
+      type: "Full-time",
+      salary: "$100k - $130k",
+      description: "Lead product strategy and roadmap for our subscription management platform.",
+      requirements: ["3+ years PM experience", "Analytics skills", "Financial services knowledge"],
+      benefits: ["Equity package", "Health & dental", "Unlimited PTO"]
+    },
+    {
+      id: 3,
+      title: "Customer Success Manager",
+      department: "Customer Success",
+      location: "Remote",
+      type: "Full-time",
+      salary: "$60k - $80k",
+      description: "Help our users get the most out of ManageMySubs through personalized onboarding and support.",
+      requirements: ["2+ years customer success", "SaaS experience", "Excellent communication"],
+      benefits: ["Remote work", "Learning stipend", "Team retreats"]
+    },
+    {
+      id: 4,
+      title: "DevOps Engineer",
+      department: "Engineering",
+      location: "San Francisco, CA",
+      type: "Full-time",
+      salary: "$110k - $140k",
+      description: "Build and maintain our cloud infrastructure to ensure reliable, scalable service delivery.",
+      requirements: ["AWS/Azure experience", "Infrastructure as code", "Monitoring & alerting"],
+      benefits: ["Top-tier health benefits", "Stock options", "Flexible work arrangements"]
+    },
+    {
+      id: 5,
+      title: "Marketing Specialist",
+      department: "Marketing",
+      location: "Remote",
+      type: "Full-time",
+      salary: "$65k - $85k",
+      description: "Drive growth through content marketing, SEO, and community engagement.",
+      requirements: ["Digital marketing experience", "Content creation", "Analytics tools"],
+      benefits: ["Remote-first culture", "Creative freedom", "Conference budget"]
+    },
+    {
+      id: 6,
+      title: "UX Designer",
+      department: "Design",
+      location: "Austin, TX",
+      type: "Full-time",
+      salary: "$80k - $105k",
+      description: "Create intuitive, beautiful interfaces that help users manage their subscriptions effortlessly.",
+      requirements: ["Portfolio showcasing UX work", "Figma/Sketch proficiency", "User research experience"],
+      benefits: ["Design system ownership", "Health insurance", "Professional development"]
+    }
+  ]
+
+  const values = [
+    {
+      icon: FiUsers,
+      title: "Collaborative Culture",
+      description: "We believe in the power of teamwork and open communication. Every voice matters in shaping our product and company."
+    },
+    {
+      icon: FiTarget,
+      title: "Impact-Driven Work",
+      description: "Your work directly helps thousands of users take control of their finances and build better spending habits."
+    },
+    {
+      icon: FiHeart,
+      title: "Work-Life Balance",
+      description: "We prioritize your well-being with flexible hours, remote work options, and generous time off policies."
+    }
+  ]
+
+  const perks = [
+    "Comprehensive health, dental, and vision insurance",
+    "Flexible work hours and remote work options",
+    "Professional development budget",
+    "Unlimited PTO policy",
+    "Equity participation program",
+    "Team building events and retreats",
+    "Modern equipment and home office stipend",
+    "Learning and conference attendance budget"
+  ]
+
+  return (
+    <div className="min-h-screen bg-background">
+      {/* Hero Section */}
+      <section className="bg-white py-16">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-4xl md:text-5xl font-bold text-text mb-6">
+            Join Our Team
+          </h1>
+          <p className="text-xl text-text max-w-2xl mx-auto">
+            Help us empower people to take control of their subscriptions and build better financial habits.
+          </p>
+        </div>
+      </section>
+
+      {/* Values Section */}
+      <section className="py-16 bg-background">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-text mb-4">Why Work With Us?</h2>
+            <p className="text-text">Our values drive everything we do</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {values.map((value, index) => (
+              <div key={index} className="text-center bg-white p-8 rounded-xl border border-secondary shadow-sm">
+                <value.icon className="w-12 h-12 text-accent mx-auto mb-4" />
+                <h3 className="text-xl font-bold text-text mb-3">{value.title}</h3>
+                <p className="text-text">{value.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Open Positions */}
+      <section className="py-16 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-text mb-4">Open Positions</h2>
+            <p className="text-text">Find your next opportunity</p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {jobOpenings.map(job => (
+              <div key={job.id} className="bg-background p-6 rounded-xl border border-secondary shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex items-start justify-between mb-4">
+                  <div>
+                    <h3 className="text-xl font-bold text-text mb-1">{job.title}</h3>
+                    <p className="text-accent font-medium">{job.department}</p>
+                  </div>
+                  <span className="bg-primary text-white px-3 py-1 rounded-full text-sm font-medium">
+                    {job.type}
+                  </span>
+                </div>
+
+                <p className="text-text mb-4">{job.description}</p>
+
+                <div className="grid grid-cols-2 gap-4 mb-4">
+                  <div className="flex items-center gap-2">
+                    <FiMapPin className="w-4 h-4 text-text" />
+                    <span className="text-sm text-text">{job.location}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <FiDollarSign className="w-4 h-4 text-text" />
+                    <span className="text-sm text-text">{job.salary}</span>
+                  </div>
+                </div>
+
+                <div className="mb-4">
+                  <h4 className="font-semibold text-text mb-2">Requirements:</h4>
+                  <ul className="text-sm text-text space-y-1">
+                    {job.requirements.map((req, index) => (
+                      <li key={index} className="flex items-center gap-2">
+                        <div className="w-1.5 h-1.5 bg-accent rounded-full"></div>
+                        {req}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="mb-6">
+                  <h4 className="font-semibold text-text mb-2">Benefits:</h4>
+                  <ul className="text-sm text-text space-y-1">
+                    {job.benefits.map((benefit, index) => (
+                      <li key={index} className="flex items-center gap-2">
+                        <div className="w-1.5 h-1.5 bg-accent rounded-full"></div>
+                        {benefit}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <button className="w-full bg-primary text-white py-3 px-4 rounded-lg hover:bg-secondary transition-colors flex items-center justify-center gap-2 font-medium">
+                  Apply Now
+                  <FiArrowRight className="w-4 h-4" />
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Perks & Benefits */}
+      <section className="py-16 bg-primary">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <FiBriefcase className="text-accent w-12 h-12 mx-auto mb-4" />
+            <h2 className="text-3xl font-bold text-white mb-4">Perks & Benefits</h2>
+            <p className="text-blue-100 text-lg">We offer competitive benefits to support your work and life</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {perks.map((perk, index) => (
+              <div key={index} className="bg-white bg-opacity-10 backdrop-blur-sm p-6 rounded-xl border border-white border-opacity-20">
+                <div className="w-10 h-10 bg-accent rounded-lg flex items-center justify-center mb-4">
+                  <FiHeart className="text-white w-5 h-5" />
+                </div>
+                <p className="text-white font-medium">{perk}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Application Process */}
+      <section className="py-16 bg-background">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-text mb-4">Our Hiring Process</h2>
+            <p className="text-text">What to expect when you apply</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            {[
+              {
+                step: "01",
+                title: "Application Review",
+                description: "We carefully review every application and typically respond within 3-5 business days."
+              },
+              {
+                step: "02",
+                title: "Initial Interview",
+                description: "A 30-minute conversation with our recruiting team to learn more about you and your experience."
+              },
+              {
+                step: "03",
+                title: "Technical Assessment",
+                description: "Depending on the role, you may complete a coding challenge, case study, or portfolio review."
+              },
+              {
+                step: "04",
+                title: "Final Interview",
+                description: "Meet with the hiring manager and key team members to discuss the role and company culture."
+              }
+            ].map((step, index) => (
+              <div key={index} className="text-center">
+                <div className="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">
+                  {step.step}
+                </div>
+                <h3 className="text-lg font-bold text-text mb-2">{step.title}</h3>
+                <p className="text-text text-sm">{step.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-16 bg-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl font-bold text-text mb-4">Ready to Join Us?</h2>
+          <p className="text-text text-lg mb-8">
+            Don't see a perfect match? We're always looking for talented individuals to join our growing team.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button className="bg-primary text-white px-8 py-4 rounded-lg hover:bg-secondary transition-colors font-medium">
+              View All Openings
+            </button>
+            <button className="border border-primary text-primary px-8 py-4 rounded-lg hover:bg-primary hover:text-white transition-colors font-medium">
+              Send Us Your Resume
+            </button>
+          </div>
+
+          <p className="text-text text-sm mt-6">
+            Questions about careers at ManageMySubs? <a href="/contact" className="text-primary hover:text-secondary">Contact us</a>
+          </p>
+        </div>
+      </section>
+    </div>
+  )
+}
+
+export default Careers

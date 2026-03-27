@@ -1,0 +1,32 @@
+interface StatsCardProps {
+  title: string
+  value: string | number
+  subtitle?: string
+  icon?: string
+  color?: 'blue' | 'green' | 'red' | 'yellow' | 'purple'
+}
+
+function StatsCard({ title, value, subtitle, icon, color = 'blue' }: StatsCardProps) {
+  const colorClasses = {
+    blue: 'bg-background border-secondary text-primary',
+    green: 'bg-green-50 border-green-200 text-green-700',
+    red: 'bg-red-50 border-red-200 text-red-700',
+    yellow: 'bg-yellow-50 border-yellow-200 text-yellow-700',
+    purple: 'bg-purple-50 border-purple-200 text-purple-700'
+  }
+
+  return (
+    <div className={`p-6 rounded-lg border ${colorClasses[color]}`}>
+      <div className="text-center mb-4">
+        {icon && <span className="card-icon text-3xl">{icon}</span>}
+      </div>
+      <div className="text-center">
+        <p className="text-sm font-medium opacity-75">{title}</p>
+        <p className="text-2xl font-bold">{value}</p>
+        {subtitle && <p className="text-sm opacity-75 mt-1">{subtitle}</p>}
+      </div>
+    </div>
+  )
+}
+
+export default StatsCard

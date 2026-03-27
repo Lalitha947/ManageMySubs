@@ -1,0 +1,210 @@
+import { FiBarChart2, FiBell, FiShield, FiTrendingUp, FiUsers, FiZap, FiCheckCircle, FiStar } from 'react-icons/fi'
+
+function Features() {
+  const features = [
+    {
+      icon: FiBarChart2,
+      title: "Comprehensive Dashboard",
+      description: "Get a complete overview of all your subscriptions in one beautiful, intuitive dashboard.",
+      details: ["Real-time expense tracking", "Visual spending analytics", "Customizable widgets", "Mobile-responsive design"]
+    },
+    {
+      icon: FiBell,
+      title: "Smart Notifications",
+      description: "Never miss a payment with intelligent reminders and alerts tailored to your preferences.",
+      details: ["Renewal notifications", "Payment due alerts", "Budget warnings", "Customizable timing"]
+    },
+    {
+      icon: FiShield,
+      title: "Bank-Level Security",
+      description: "Your financial data is protected with enterprise-grade security and encryption.",
+      details: ["256-bit SSL encryption", "Secure data storage", "Regular security audits", "GDPR compliant"]
+    },
+    {
+      icon: FiTrendingUp,
+      title: "Spending Analytics",
+      description: "Understand your subscription habits with detailed insights and spending trends.",
+      details: ["Monthly/yearly breakdowns", "Category analysis", "Cost optimization tips", "Exportable reports"]
+    },
+    {
+      icon: FiUsers,
+      title: "Family Sharing",
+      description: "Manage subscriptions for your entire family with shared accounts and permissions.",
+      details: ["Multi-user accounts", "Role-based access", "Shared expense tracking", "Family budget goals"]
+    },
+    {
+      icon: FiZap,
+      title: "Automated Tracking",
+      description: "Automatically detect and categorize new subscriptions from your email and bank statements.",
+      details: ["Email integration", "Bank statement parsing", "Smart categorization", "Duplicate detection"]
+    }
+  ]
+
+  const testimonials = [
+    {
+      name: "Sarah Johnson",
+      role: "Marketing Director",
+      company: "TechCorp",
+      content: "ManageMySubs has saved me hours every month. I finally know exactly where my money is going.",
+      rating: 5
+    },
+    {
+      name: "Mike Chen",
+      role: "Freelance Designer",
+      company: "Self-employed",
+      content: "The analytics features are incredible. I discovered I was paying for 3 design tools I never used!",
+      rating: 5
+    },
+    {
+      name: "Jennifer Davis",
+      role: "Small Business Owner",
+      company: "Local Cafe",
+      content: "Managing business subscriptions was a nightmare until we found this platform. Game changer.",
+      rating: 5
+    }
+  ]
+
+  const stats = [
+    { number: "10,000+", label: "Active Users" },
+    { number: "$2M+", label: "Subscriptions Tracked" },
+    { number: "99.9%", label: "Uptime" },
+    { number: "24/7", label: "Support" }
+  ]
+
+  return (
+    <div className="min-h-screen bg-background">
+      {/* Hero Section */}
+      <section className="bg-white py-16">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h1 className="text-4xl md:text-5xl font-bold text-text mb-6">
+              Powerful Features for Smart Subscription Management
+            </h1>
+            <p className="text-xl text-text max-w-3xl mx-auto">
+              Everything you need to take control of your recurring expenses, from tracking to optimization.
+            </p>
+          </div>
+
+          {/* Stats */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
+            {stats.map((stat, index) => (
+              <div key={index} className="text-center">
+                <div className="text-3xl md:text-4xl font-bold text-primary mb-2">{stat.number}</div>
+                <div className="text-text">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Features Grid */}
+      <section className="py-16 bg-background">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {features.map((feature, index) => (
+              <div key={index} className="bg-white p-8 rounded-xl border border-secondary shadow-sm hover:shadow-md transition-shadow">
+                <feature.icon className="card-icon w-12 h-12 text-accent mb-6" />
+                <h3 className="text-xl font-bold text-text mb-4">{feature.title}</h3>
+                <p className="text-text mb-6">{feature.description}</p>
+                <ul className="space-y-2">
+                  {feature.details.map((detail, detailIndex) => (
+                    <li key={detailIndex} className="flex items-center gap-3 text-sm text-text">
+                      <FiCheckCircle className="w-4 h-4 text-accent flex-shrink-0" />
+                      {detail}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works */}
+      <section className="py-16 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-text mb-4">How It Works</h2>
+            <p className="text-text text-lg">Get started in three simple steps</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                step: "01",
+                title: "Connect Your Accounts",
+                description: "Link your email and bank accounts securely to automatically detect subscriptions."
+              },
+              {
+                step: "02",
+                title: "Review & Organize",
+                description: "Our AI categorizes your subscriptions and helps you identify unused services."
+              },
+              {
+                step: "03",
+                title: "Save & Optimize",
+                description: "Get personalized recommendations to reduce costs and improve your spending habits."
+              }
+            ].map((step, index) => (
+              <div key={index} className="text-center">
+                <div className="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-6">
+                  {step.step}
+                </div>
+                <h3 className="text-xl font-bold text-text mb-4">{step.title}</h3>
+                <p className="text-text">{step.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="py-16 bg-primary">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-white mb-4">Loved by Thousands</h2>
+            <p className="text-blue-100 text-lg">See what our users have to say</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {testimonials.map((testimonial, index) => (
+              <div key={index} className="bg-white bg-opacity-10 backdrop-blur-sm p-6 rounded-xl border border-white border-opacity-20">
+                <div className="flex items-center mb-4">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <FiStar key={i} className="w-5 h-5 text-accent fill-current" />
+                  ))}
+                </div>
+                <p className="text-white mb-6 italic">"{testimonial.content}"</p>
+                <div>
+                  <div className="font-semibold text-white">{testimonial.name}</div>
+                  <div className="text-blue-200 text-sm">{testimonial.role}, {testimonial.company}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-16 bg-background">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl font-bold text-text mb-4">Ready to Get Started?</h2>
+          <p className="text-text text-lg mb-8">
+            Join thousands of users who have taken control of their subscriptions.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button className="bg-primary text-white px-8 py-4 rounded-lg hover:bg-secondary transition-colors font-medium">
+              Start Free Trial
+            </button>
+            <button className="border border-primary text-primary px-8 py-4 rounded-lg hover:bg-primary hover:text-white transition-colors font-medium">
+              View Pricing
+            </button>
+          </div>
+        </div>
+      </section>
+    </div>
+  )
+}
+
+export default Features

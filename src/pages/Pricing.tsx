@@ -1,0 +1,253 @@
+import { FiCheck, FiX, FiStar, FiZap } from 'react-icons/fi'
+
+function Pricing() {
+  const plans = [
+    {
+      name: "Free",
+      price: "$0",
+      period: "forever",
+      description: "Perfect for getting started with subscription management",
+      features: [
+        "Up to 5 subscriptions",
+        "Basic dashboard",
+        "Email notifications",
+        "Mobile app access",
+        "Community support"
+      ],
+      limitations: [
+        "No advanced analytics",
+        "No export features",
+        "No family sharing"
+      ],
+      popular: false,
+      cta: "Get Started Free"
+    },
+    {
+      name: "Pro",
+      price: "$9.99",
+      period: "per month",
+      description: "Ideal for individuals who want comprehensive subscription tracking",
+      features: [
+        "Unlimited subscriptions",
+        "Advanced analytics & reports",
+        "Custom categories",
+        "Export data (CSV/PDF)",
+        "Priority email support",
+        "Family sharing (up to 3 users)",
+        "Budget alerts & goals",
+        "Historical data (2 years)"
+      ],
+      limitations: [],
+      popular: true,
+      cta: "Start Pro Trial"
+    },
+    {
+      name: "Business",
+      price: "$29.99",
+      period: "per month",
+      description: "Advanced features for teams and small businesses",
+      features: [
+        "Everything in Pro",
+        "Team collaboration",
+        "Advanced reporting",
+        "API access",
+        "Custom integrations",
+        "Dedicated account manager",
+        "Phone & chat support",
+        "SLA guarantee",
+        "Custom branding",
+        "Advanced security features"
+      ],
+      limitations: [],
+      popular: false,
+      cta: "Contact Sales"
+    }
+  ]
+
+  const faqs = [
+    {
+      question: "Can I change plans at any time?",
+      answer: "Yes! You can upgrade or downgrade your plan at any time. Changes take effect immediately, and we'll prorate any charges."
+    },
+    {
+      question: "Is there a free trial?",
+      answer: "Absolutely! We offer a 14-day free trial for all paid plans. No credit card required to start."
+    },
+    {
+      question: "What payment methods do you accept?",
+      answer: "We accept all major credit cards (Visa, MasterCard, American Express), PayPal, and bank transfers for annual plans."
+    },
+    {
+      question: "Can I cancel my subscription?",
+      answer: "Yes, you can cancel your subscription at any time. You'll continue to have access until the end of your billing period."
+    },
+    {
+      question: "Do you offer discounts for annual billing?",
+      answer: "Yes! Save 20% when you pay annually. This applies to both Pro and Business plans."
+    },
+    {
+      question: "Is my data secure?",
+      answer: "Absolutely. We use bank-level 256-bit SSL encryption, regular security audits, and comply with GDPR and other privacy regulations."
+    }
+  ]
+
+  return (
+    <div className="min-h-screen bg-background">
+      {/* Hero Section */}
+      <section className="bg-white py-16">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-4xl md:text-5xl font-bold text-text mb-6">
+            Simple, Transparent Pricing
+          </h1>
+          <p className="text-xl text-text max-w-2xl mx-auto mb-8">
+            Choose the plan that's right for you. All plans include our core features with no hidden fees.
+          </p>
+          <div className="flex items-center justify-center gap-4 text-text">
+            <FiStar className="w-5 h-5 text-accent" />
+            <span>14-day free trial on all paid plans</span>
+            <FiStar className="w-5 h-5 text-accent" />
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing Cards */}
+      <section className="py-16 bg-background">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {plans.map((plan, index) => (
+              <div
+                key={index}
+                className={`bg-white rounded-2xl border-2 p-8 relative ${
+                  plan.popular ? 'border-accent shadow-lg scale-105' : 'border-secondary'
+                }`}
+              >
+                {plan.popular && (
+                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                    <span className="bg-accent text-white px-4 py-2 rounded-full text-sm font-medium">
+                      Most Popular
+                    </span>
+                  </div>
+                )}
+
+                <div className="text-center mb-8">
+                  <h3 className="text-2xl font-bold text-text mb-2">{plan.name}</h3>
+                  <div className="mb-4">
+                    <span className="text-4xl font-bold text-primary">{plan.price}</span>
+                    <span className="text-text">/{plan.period}</span>
+                  </div>
+                  <p className="text-text">{plan.description}</p>
+                </div>
+
+                <div className="space-y-4 mb-8">
+                  {plan.features.map((feature, featureIndex) => (
+                    <div key={featureIndex} className="flex items-center gap-3">
+                      <FiCheck className="w-5 h-5 text-accent flex-shrink-0" />
+                      <span className="text-text text-sm">{feature}</span>
+                    </div>
+                  ))}
+
+                  {plan.limitations.map((limitation, limitIndex) => (
+                    <div key={limitIndex} className="flex items-center gap-3 opacity-60">
+                      <FiX className="w-5 h-5 text-red-500 flex-shrink-0" />
+                      <span className="text-text text-sm">{limitation}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <button
+                  className={`w-full py-3 px-6 rounded-lg font-medium transition-colors ${
+                    plan.popular
+                      ? 'bg-accent text-white hover:bg-accent hover:bg-opacity-90'
+                      : 'bg-primary text-white hover:bg-secondary'
+                  }`}
+                >
+                  {plan.cta}
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Annual Savings */}
+      <section className="py-16 bg-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="bg-background rounded-2xl p-8 border border-secondary">
+            <FiZap className="w-12 h-12 text-accent mx-auto mb-4" />
+            <h2 className="text-2xl font-bold text-text mb-4">Save 20% with Annual Billing</h2>
+            <p className="text-text mb-6">
+              Pay annually and save big! Instead of $119.88/year for Pro, pay just $95.89/year.
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
+              <div>
+                <h3 className="font-semibold text-text mb-2">Monthly Billing</h3>
+                <p className="text-text text-sm">$9.99 × 12 = $119.88/year</p>
+              </div>
+              <div>
+                <h3 className="font-semibold text-text mb-2">Annual Billing</h3>
+                <p className="text-accent font-medium text-sm">$7.99 × 12 = $95.89/year</p>
+                <p className="text-accent text-xs">Save $23.99/year</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-16 bg-background">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-text mb-4">Frequently Asked Questions</h2>
+            <p className="text-text">Everything you need to know about our pricing</p>
+          </div>
+
+          <div className="space-y-6">
+            {faqs.map((faq, index) => (
+              <div key={index} className="bg-white p-6 rounded-xl border border-secondary">
+                <h3 className="text-lg font-semibold text-text mb-3">{faq.question}</h3>
+                <p className="text-text">{faq.answer}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Enterprise CTA */}
+      <section className="py-16 bg-primary">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl font-bold text-white mb-4">Need Enterprise Features?</h2>
+          <p className="text-blue-100 text-lg mb-8">
+            Custom solutions for large organizations with advanced security, compliance, and integration needs.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button className="bg-accent text-white px-8 py-4 rounded-lg hover:bg-accent hover:bg-opacity-90 transition-colors font-medium">
+              Contact Sales
+            </button>
+            <button className="border border-white text-white px-8 py-4 rounded-lg hover:bg-white hover:text-primary transition-colors font-medium">
+              Schedule Demo
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Money Back Guarantee */}
+      <section className="py-16 bg-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="bg-background rounded-2xl p-8 border border-secondary">
+            <h2 className="text-2xl font-bold text-text mb-4">30-Day Money Back Guarantee</h2>
+            <p className="text-text mb-6">
+              Not satisfied with your purchase? Get a full refund within 30 days, no questions asked.
+            </p>
+            <div className="flex items-center justify-center gap-2 text-accent">
+              <FiCheck className="w-5 h-5" />
+              <span className="font-medium">100% Risk-Free</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  )
+}
+
+export default Pricing

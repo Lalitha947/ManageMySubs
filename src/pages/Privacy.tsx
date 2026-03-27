@@ -1,0 +1,172 @@
+import { FiShield, FiLock, FiEye, FiUserCheck } from 'react-icons/fi'
+
+function Privacy() {
+  return (
+    <div className="min-h-screen bg-background">
+      {/* Hero Section */}
+      <section className="bg-white py-16">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-4xl md:text-5xl font-bold text-text mb-6">
+            Privacy Policy
+          </h1>
+          <p className="text-xl text-text max-w-2xl mx-auto">
+            Your privacy is our priority. Learn how we collect, use, and protect your personal information.
+          </p>
+        </div>
+      </section>
+
+      {/* Last Updated */}
+      <section className="py-8 bg-background">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <p className="text-sm text-text">Last updated: March 26, 2026</p>
+        </div>
+      </section>
+
+      {/* Content */}
+      <section className="py-16">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+          {/* Introduction */}
+          <div className="bg-white p-8 rounded-xl shadow-sm border border-secondary">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="text-3xl text-accent"><FiShield size={32} /></div>
+              <h2 className="text-2xl font-bold text-text">Introduction</h2>
+            </div>
+            <p className="text-text mb-4">
+              ManageMySubs ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our subscription management platform.
+            </p>
+            <p className="text-text">
+              By using our service, you agree to the collection and use of information in accordance with this policy.
+            </p>
+          </div>
+
+          {/* Information We Collect */}
+          <div className="bg-white p-8 rounded-xl shadow-sm border border-secondary">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="text-3xl text-accent"><FiEye size={32} /></div>
+              <h2 className="text-2xl font-bold text-text">Information We Collect</h2>
+            </div>
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-lg font-semibold text-text mb-3">Personal Information</h3>
+                <p className="text-text mb-3">We may collect the following personal information:</p>
+                <ul className="list-disc list-inside text-text space-y-1 ml-4">
+                  <li>Name and email address</li>
+                  <li>Account credentials (username and password)</li>
+                  <li>Payment information (processed securely by third-party providers)</li>
+                  <li>Subscription data you enter into our platform</li>
+                </ul>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-text mb-3">Usage Information</h3>
+                <p className="text-text">
+                  We automatically collect certain information about your use of our service, including:
+                </p>
+                <ul className="list-disc list-inside text-text space-y-1 ml-4 mt-3">
+                  <li>IP address and location data</li>
+                  <li>Browser type and version</li>
+                  <li>Pages visited and time spent on our site</li>
+                  <li>Device information</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          {/* How We Use Your Information */}
+          <div className="bg-white p-8 rounded-xl shadow-sm border border-secondary">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="text-3xl text-accent"><FiUserCheck size={32} /></div>
+              <h2 className="text-2xl font-bold text-text">How We Use Your Information</h2>
+            </div>
+            <p className="text-text mb-4">We use the information we collect for the following purposes:</p>
+            <ul className="list-disc list-inside text-text space-y-2 ml-4">
+              <li>To provide and maintain our subscription management service</li>
+              <li>To process transactions and send related information</li>
+              <li>To send you important updates about your account and subscriptions</li>
+              <li>To improve our service through analytics and user feedback</li>
+              <li>To comply with legal obligations</li>
+              <li>To detect and prevent fraud</li>
+            </ul>
+          </div>
+
+          {/* Information Sharing */}
+          <div className="bg-white p-8 rounded-xl shadow-sm border border-secondary">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="text-3xl text-accent"><FiLock size={32} /></div>
+              <h2 className="text-2xl font-bold text-text">Information Sharing and Disclosure</h2>
+            </div>
+            <p className="text-text mb-4">We do not sell, trade, or otherwise transfer your personal information to third parties, except in the following circumstances:</p>
+            <ul className="list-disc list-inside text-text space-y-2 ml-4">
+              <li>With your explicit consent</li>
+              <li>To comply with legal requirements</li>
+              <li>To protect our rights and prevent fraud</li>
+              <li>With trusted service providers who assist in operating our platform (under strict confidentiality agreements)</li>
+            </ul>
+          </div>
+
+          {/* Data Security */}
+          <div className="bg-white p-8 rounded-xl shadow-sm border border-secondary">
+            <h2 className="text-2xl font-bold text-text mb-6">Data Security</h2>
+            <p className="text-text mb-4">
+              We implement appropriate technical and organizational measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction. These measures include:
+            </p>
+            <ul className="list-disc list-inside text-text space-y-2 ml-4">
+              <li>Encryption of data in transit and at rest</li>
+              <li>Regular security audits and updates</li>
+              <li>Access controls and authentication requirements</li>
+              <li>Secure data centers and infrastructure</li>
+            </ul>
+          </div>
+
+          {/* Your Rights */}
+          <div className="bg-white p-8 rounded-xl shadow-sm border border-secondary">
+            <h2 className="text-2xl font-bold text-text mb-6">Your Rights</h2>
+            <p className="text-text mb-4">You have the following rights regarding your personal information:</p>
+            <ul className="list-disc list-inside text-text space-y-2 ml-4">
+              <li><strong>Access:</strong> Request a copy of your personal information</li>
+              <li><strong>Correction:</strong> Request correction of inaccurate information</li>
+              <li><strong>Deletion:</strong> Request deletion of your personal information</li>
+              <li><strong>Portability:</strong> Request transfer of your data to another service</li>
+              <li><strong>Objection:</strong> Object to processing of your personal information</li>
+            </ul>
+            <p className="text-text mt-4">
+              To exercise these rights, please contact us using the information provided in our Contact page.
+            </p>
+          </div>
+
+          {/* Cookies */}
+          <div className="bg-white p-8 rounded-xl shadow-sm border border-secondary">
+            <h2 className="text-2xl font-bold text-text mb-6">Cookies and Tracking Technologies</h2>
+            <p className="text-text mb-4">
+              We use cookies and similar technologies to enhance your experience on our platform. For detailed information about our cookie practices, please see our <a href="/cookie-policy" className="text-primary hover:text-secondary">Cookie Policy</a>.
+            </p>
+          </div>
+
+          {/* Changes to This Policy */}
+          <div className="bg-white p-8 rounded-xl shadow-sm border border-secondary">
+            <h2 className="text-2xl font-bold text-text mb-6">Changes to This Privacy Policy</h2>
+            <p className="text-text mb-4">
+              We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Last updated" date.
+            </p>
+            <p className="text-text">
+              We encourage you to review this Privacy Policy periodically to stay informed about how we are protecting your information.
+            </p>
+          </div>
+
+          {/* Contact Us */}
+          <div className="bg-white p-8 rounded-xl shadow-sm border border-secondary">
+            <h2 className="text-2xl font-bold text-text mb-6">Contact Us</h2>
+            <p className="text-text mb-4">
+              If you have any questions about this Privacy Policy or our privacy practices, please contact us:
+            </p>
+            <div className="text-text">
+              <p><strong>Email:</strong> privacy@subscriptionmanager.com</p>
+              <p><strong>Address:</strong> ManageMySubs Privacy Team</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  )
+}
+
+export default Privacy
