@@ -1,0 +1,250 @@
+import { FiShield, FiLock, FiEye, FiServer, FiKey, FiCheckCircle, FiAlertTriangle, FiUsers, FiFileText } from 'react-icons/fi'
+
+function Security() {
+  const securityFeatures = [
+    {
+      icon: FiLock,
+      title: "End-to-End Encryption",
+      description: "All your data is encrypted in transit and at rest using industry-standard AES-256 encryption.",
+      details: ["SSL/TLS 1.3 encryption", "AES-256 data encryption", "Secure key management", "Regular encryption audits"]
+    },
+    {
+      icon: FiEye,
+      title: "Privacy by Design",
+      description: "We build privacy into every feature, ensuring your financial data is never shared without consent.",
+      details: ["Zero-knowledge architecture", "Minimal data collection", "GDPR compliant", "Privacy-first development"]
+    },
+    {
+      icon: FiServer,
+      title: "Secure Infrastructure",
+      description: "Our cloud infrastructure is hosted on enterprise-grade servers with multiple security layers.",
+      details: ["SOC 2 Type II certified", "ISO 27001 compliant", "Regular penetration testing", "24/7 security monitoring"]
+    },
+    {
+      icon: FiKey,
+      title: "Advanced Authentication",
+      description: "Multi-factor authentication and secure login methods protect your account from unauthorized access.",
+      details: ["Two-factor authentication", "Biometric login support", "Secure password policies", "Session management"]
+    }
+  ]
+
+  const certifications = [
+    { name: "SOC 2 Type II", description: "Security, availability, and confidentiality" },
+    { name: "ISO 27001", description: "Information security management systems" },
+    { name: "GDPR Compliant", description: "European data protection regulation" },
+    { name: "CCPA Ready", description: "California consumer privacy act" }
+  ]
+
+  const securityMeasures = [
+    "Regular security audits and penetration testing",
+    "Employee background checks and security training",
+    "Incident response plan and breach notification procedures",
+    "Data minimization and retention policies",
+    "Secure development lifecycle (SDL)",
+    "Third-party vendor risk assessments",
+    "Regular software updates and patch management",
+    "Network segmentation and access controls"
+  ]
+
+  const faqs = [
+    {
+      question: "How is my data protected?",
+      answer: "We use bank-level encryption (AES-256) for all data at rest and in transit. Our servers are hosted in secure data centers with multiple layers of physical and digital security."
+    },
+    {
+      question: "Do you comply with data protection regulations?",
+      answer: "Yes, we are fully compliant with GDPR, CCPA, and other major data protection regulations. We conduct regular audits to ensure ongoing compliance."
+    },
+    {
+      question: "What happens if there's a security breach?",
+      answer: "We have a comprehensive incident response plan. In the unlikely event of a breach, we will notify affected users within 72 hours and provide full transparency about what happened and how we're addressing it."
+    },
+    {
+      question: "Can I delete my data?",
+      answer: "Absolutely. You can delete your account and all associated data at any time through your account settings. We also offer data export options so you can take your data with you."
+    },
+    {
+      question: "Do you share my data with third parties?",
+      answer: "No. We never sell, rent, or share your personal data with third parties for marketing purposes. We only share data when legally required or with your explicit consent."
+    }
+  ]
+
+  return (
+    <div className="min-h-screen bg-background">
+      {/* Hero Section */}
+      <section className="bg-white py-16">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-4xl md:text-5xl font-bold text-text mb-6">
+            Your Security is Our Priority
+          </h1>
+          <p className="text-xl text-text max-w-2xl mx-auto">
+            Bank-level security measures protect your financial data with enterprise-grade encryption and compliance.
+          </p>
+        </div>
+      </section>
+
+      {/* Security Features */}
+      <section className="py-16 bg-background">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-text mb-4">Security Features</h2>
+            <p className="text-text">Comprehensive protection for your subscription data</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {securityFeatures.map((feature, index) => (
+              <div key={index} className="bg-white p-8 rounded-xl border border-secondary shadow-sm">
+                <feature.icon className="w-12 h-12 text-accent mb-6" />
+                <h3 className="text-xl font-bold text-text mb-4">{feature.title}</h3>
+                <p className="text-text mb-6">{feature.description}</p>
+                <ul className="space-y-2">
+                  {feature.details.map((detail, detailIndex) => (
+                    <li key={detailIndex} className="flex items-center gap-3 text-sm text-text">
+                      <FiCheckCircle className="w-4 h-4 text-accent flex-shrink-0" />
+                      {detail}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Certifications */}
+      <section className="py-16 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-text mb-4">Certifications & Compliance</h2>
+            <p className="text-text">Industry-leading security standards and certifications</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {certifications.map((cert, index) => (
+              <div key={index} className="text-center p-6 bg-background rounded-xl border border-secondary">
+                <FiShield className="w-8 h-8 text-accent mx-auto mb-3" />
+                <h3 className="font-semibold text-text mb-2">{cert.name}</h3>
+                <p className="text-sm text-text">{cert.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Security Measures */}
+      <section className="py-16 bg-primary">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <FiAlertTriangle className="w-12 h-12 text-accent mx-auto mb-4" />
+            <h2 className="text-3xl font-bold text-white mb-4">Our Security Measures</h2>
+            <p className="text-blue-100 text-lg">Comprehensive security practices protect your data</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {securityMeasures.map((measure, index) => (
+              <div key={index} className="flex items-center gap-4 bg-white bg-opacity-10 backdrop-blur-sm p-4 rounded-lg border border-white border-opacity-20">
+                <FiCheckCircle className="w-6 h-6 text-accent flex-shrink-0" />
+                <span className="text-white">{measure}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Data Handling */}
+      <section className="py-16 bg-background">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <h2 className="text-3xl font-bold text-text mb-6">How We Handle Your Data</h2>
+              <div className="space-y-6">
+                <div className="flex items-start gap-4">
+                  <FiUsers className="w-6 h-6 text-accent mt-1 flex-shrink-0" />
+                  <div>
+                    <h3 className="font-semibold text-text mb-2">Data Collection</h3>
+                    <p className="text-text">We only collect the minimum data necessary to provide our service. No unnecessary tracking or data collection.</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <FiFileText className="w-6 h-6 text-accent mt-1 flex-shrink-0" />
+                  <div>
+                    <h3 className="font-semibold text-text mb-2">Data Usage</h3>
+                    <p className="text-text">Your data is used solely to provide subscription management services and improve your experience.</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <FiLock className="w-6 h-6 text-accent mt-1 flex-shrink-0" />
+                  <div>
+                    <h3 className="font-semibold text-text mb-2">Data Retention</h3>
+                    <p className="text-text">We retain your data only as long as necessary and delete it securely when you close your account.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white p-8 rounded-xl border border-secondary">
+              <h3 className="text-xl font-bold text-text mb-6">Your Privacy Rights</h3>
+              <ul className="space-y-3">
+                {[
+                  "Access your personal data",
+                  "Correct inaccurate information",
+                  "Delete your account and data",
+                  "Export your data",
+                  "Object to data processing",
+                  "Withdraw consent anytime"
+                ].map((right, index) => (
+                  <li key={index} className="flex items-center gap-3">
+                    <FiCheckCircle className="w-5 h-5 text-accent flex-shrink-0" />
+                    <span className="text-text">{right}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-16 bg-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-text mb-4">Security FAQ</h2>
+            <p className="text-text">Common questions about our security practices</p>
+          </div>
+
+          <div className="space-y-6">
+            {faqs.map((faq, index) => (
+              <div key={index} className="bg-background p-6 rounded-xl border border-secondary">
+                <h3 className="text-lg font-semibold text-text mb-3">{faq.question}</h3>
+                <p className="text-text">{faq.answer}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-16 bg-background">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl font-bold text-text mb-4">Questions About Security?</h2>
+          <p className="text-text text-lg mb-8">
+            Our security team is here to help. Contact us with any questions or concerns.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button className="bg-primary text-white px-8 py-4 rounded-lg hover:bg-secondary transition-colors font-medium">
+              Contact Security Team
+            </button>
+            <button className="border border-primary text-primary px-8 py-4 rounded-lg hover:bg-primary hover:text-white transition-colors font-medium">
+              View Privacy Policy
+            </button>
+          </div>
+        </div>
+      </section>
+    </div>
+  )
+}
+
+export default Security

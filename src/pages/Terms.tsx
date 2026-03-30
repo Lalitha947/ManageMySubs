@@ -1,0 +1,198 @@
+import { FiFileText, FiUsers, FiAlertTriangle, FiCheckCircle } from 'react-icons/fi'
+
+function Terms() {
+  return (
+    <div className="min-h-screen bg-background">
+      {/* Hero Section */}
+      <section className="bg-white py-16">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-4xl md:text-5xl font-bold text-text mb-6">
+            Terms of Service
+          </h1>
+          <p className="text-xl text-text max-w-2xl mx-auto">
+            Please read these terms carefully before using our subscription management service.
+          </p>
+        </div>
+      </section>
+
+      {/* Last Updated */}
+      <section className="py-8 bg-background">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <p className="text-sm text-text">Last updated: March 26, 2026</p>
+        </div>
+      </section>
+
+      {/* Content */}
+      <section className="py-16">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+          {/* Acceptance of Terms */}
+          <div className="bg-white p-8 rounded-xl shadow-sm border border-secondary">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="text-3xl text-accent"><FiCheckCircle size={32} /></div>
+              <h2 className="text-2xl font-bold text-text">Acceptance of Terms</h2>
+            </div>
+            <p className="text-text mb-4">
+              By accessing and using ManageMySubs ("the Service"), you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by the above, please do not use this service.
+            </p>
+            <p className="text-text">
+              These Terms of Service ("Terms") apply to all users of the Service, including without limitation users who are browsers, vendors, customers, merchants, and/or contributors of content.
+            </p>
+          </div>
+
+          {/* Description of Service */}
+          <div className="bg-white p-8 rounded-xl shadow-sm border border-secondary">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="text-3xl text-accent"><FiFileText size={32} /></div>
+              <h2 className="text-2xl font-bold text-text">Description of Service</h2>
+            </div>
+            <p className="text-text mb-4">
+              ManageMySubs is a web-based platform that helps users track, manage, and organize their recurring subscriptions. Our service includes:
+            </p>
+            <ul className="list-disc list-inside text-text space-y-2 ml-4">
+              <li>Subscription tracking and management tools</li>
+              <li>Payment reminder notifications</li>
+              <li>Analytics and reporting features</li>
+              <li>Data export capabilities</li>
+              <li>Customer support services</li>
+            </ul>
+          </div>
+
+          {/* User Accounts */}
+          <div className="bg-white p-8 rounded-xl shadow-sm border border-secondary">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="text-3xl text-accent"><FiUsers size={32} /></div>
+              <h2 className="text-2xl font-bold text-text">User Accounts</h2>
+            </div>
+            <div className="space-y-4">
+              <p className="text-text">
+                To access certain features of our Service, you must create an account. You are responsible for:
+              </p>
+              <ul className="list-disc list-inside text-text space-y-2 ml-4">
+                <li>Maintaining the confidentiality of your account credentials</li>
+                <li>All activities that occur under your account</li>
+                <li>Notifying us immediately of any unauthorized use</li>
+                <li>Providing accurate and complete information</li>
+              </ul>
+              <p className="text-text">
+                We reserve the right to terminate accounts that violate these terms or engage in fraudulent activity.
+              </p>
+            </div>
+          </div>
+
+          {/* Acceptable Use */}
+          <div className="bg-white p-8 rounded-xl shadow-sm border border-secondary">
+            <h2 className="text-2xl font-bold text-text mb-6">Acceptable Use Policy</h2>
+            <p className="text-text mb-4">You agree not to use the Service to:</p>
+            <ul className="list-disc list-inside text-text space-y-2 ml-4">
+              <li>Violate any applicable laws or regulations</li>
+              <li>Infringe on intellectual property rights</li>
+              <li>Transmit harmful or malicious code</li>
+              <li>Attempt to gain unauthorized access to our systems</li>
+              <li>Interfere with the proper functioning of the Service</li>
+              <li>Use the Service for any fraudulent or illegal purpose</li>
+              <li>Share account credentials with third parties</li>
+            </ul>
+          </div>
+
+          {/* Intellectual Property */}
+          <div className="bg-white p-8 rounded-xl shadow-sm border border-secondary">
+            <h2 className="text-2xl font-bold text-text mb-6">Intellectual Property</h2>
+            <p className="text-text mb-4">
+              The Service and its original content, features, and functionality are and will remain the exclusive property of ManageMySubs and its licensors. The Service is protected by copyright, trademark, and other laws.
+            </p>
+            <p className="text-text">
+              You may not duplicate, copy, or reuse any portion of the HTML/CSS, JavaScript, or visual design elements without express written permission from us.
+            </p>
+          </div>
+
+          {/* Privacy Policy */}
+          <div className="bg-white p-8 rounded-xl shadow-sm border border-secondary">
+            <h2 className="text-2xl font-bold text-text mb-6">Privacy Policy</h2>
+            <p className="text-text mb-4">
+              Your privacy is important to us. Please review our Privacy Policy, which also governs your use of the Service, to understand our practices.
+            </p>
+            <p className="text-text">
+              By using our Service, you consent to the collection and use of information as outlined in our <a href="/privacy" className="text-primary hover:text-secondary">Privacy Policy</a>.
+            </p>
+          </div>
+
+          {/* Termination */}
+          <div className="bg-white p-8 rounded-xl shadow-sm border border-secondary">
+            <h2 className="text-2xl font-bold text-text mb-6">Termination</h2>
+            <p className="text-text mb-4">
+              We may terminate or suspend your account and bar access to the Service immediately, without prior notice or liability, under our sole discretion, for any reason whatsoever and without limitation, including but not limited to a breach of the Terms.
+            </p>
+            <p className="text-text">
+              If you wish to terminate your account, you may simply discontinue using the Service or contact us to request account deletion.
+            </p>
+          </div>
+
+          {/* Disclaimer */}
+          <div className="bg-white p-8 rounded-xl shadow-sm border border-secondary">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="text-3xl text-accent"><FiAlertTriangle size={32} /></div>
+              <h2 className="text-2xl font-bold text-text">Disclaimer of Warranties</h2>
+            </div>
+            <p className="text-text mb-4">
+              The information on this website is provided on an "as is" basis. To the fullest extent permitted by law, ManageMySubs:
+            </p>
+            <ul className="list-disc list-inside text-text space-y-2 ml-4">
+              <li>Excludes all representations and warranties relating to this website and its contents</li>
+              <li>Does not guarantee the accuracy, completeness, or timeliness of information</li>
+              <li>Shall not be liable for any losses or damages arising from your use of the Service</li>
+              <li>Does not warrant that the Service will be uninterrupted or error-free</li>
+            </ul>
+          </div>
+
+          {/* Limitation of Liability */}
+          <div className="bg-white p-8 rounded-xl shadow-sm border border-secondary">
+            <h2 className="text-2xl font-bold text-text mb-6">Limitation of Liability</h2>
+            <p className="text-text mb-4">
+              In no event shall ManageMySubs, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential, or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from:
+            </p>
+            <ul className="list-disc list-inside text-text space-y-2 ml-4">
+              <li>Your use or inability to use the Service</li>
+              <li>Any unauthorized access to or use of our servers</li>
+              <li>Any interruption or cessation of transmission to or from the Service</li>
+              <li>Any bugs, viruses, trojan horses, or the like</li>
+              <li>Any errors or omissions in any content</li>
+            </ul>
+          </div>
+
+          {/* Governing Law */}
+          <div className="bg-white p-8 rounded-xl shadow-sm border border-secondary">
+            <h2 className="text-2xl font-bold text-text mb-6">Governing Law</h2>
+            <p className="text-text">
+              These Terms shall be interpreted and governed by the laws of the jurisdiction in which ManageMySubs operates, without regard to conflict of law provisions. Our failure to enforce any right or provision of these Terms will not be considered a waiver of those rights.
+            </p>
+          </div>
+
+          {/* Changes to Terms */}
+          <div className="bg-white p-8 rounded-xl shadow-sm border border-secondary">
+            <h2 className="text-2xl font-bold text-text mb-6">Changes to Terms</h2>
+            <p className="text-text mb-4">
+              We reserve the right, at our sole discretion, to modify or replace these Terms at any time. If a revision is material, we will provide at least 30 days notice prior to any new terms taking effect.
+            </p>
+            <p className="text-text">
+              What constitutes a material change will be determined at our sole discretion. By continuing to access or use our Service after any revisions become effective, you agree to be bound by the revised terms.
+            </p>
+          </div>
+
+          {/* Contact Information */}
+          <div className="bg-white p-8 rounded-xl shadow-sm border border-secondary">
+            <h2 className="text-2xl font-bold text-text mb-6">Contact Information</h2>
+            <p className="text-text mb-4">
+              If you have any questions about these Terms of Service, please contact us:
+            </p>
+            <div className="text-text">
+              <p><strong>Email:</strong> legal@subscriptionmanager.com</p>
+              <p><strong>Subject:</strong> Terms of Service Inquiry</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  )
+}
+
+export default Terms

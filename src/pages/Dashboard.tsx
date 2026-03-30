@@ -1,0 +1,557 @@
+import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { FiBell, FiUser, FiPlus, FiBarChart2, FiList, FiBarChart, FiSettings } from 'react-icons/fi'
+import { useAuth } from '../context/AuthContext'
+import type { Subscription } from '../types'
+import SubscriptionForm from '../components/SubscriptionForm'
+import API from '../services/api'
+
+type SectionType = 'dashboard' | 'subscriptions' | 'reports' | 'settings'
+
+function Dashboard() {
+  const { isAuthenticated, logout } = useAuth()
+  const navigate = useNavigate()
+
+  const [subscriptions, setSubscriptions] = useState<Subscription[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+  const [showForm, setShowForm] = useState(false)
+  const [editingSubscription, setEditingSubscription] = useState<Subscription | null>(null)
+  const [formLoading, setFormLoading] = useState(false)
+  const [activeSection, setActiveSection] = useState<SectionType>('dashboard')
+
+  const [searchQuery, setSearchQuery] = useState('')
+  const [filterCategory, setFilterCategory] = useState('')
+  const [filterFrequency, setFilterFrequency] = useState('')
+
+  const [settings, setSettings] = useState({
+    emailNotifications: true,
+    paymentReminders: true,
+    weeklyReports: false,
+  })
+  const [settingsSaved, setSettingsSaved] = useState(false)
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/login')
+      return
+    }
+    fetchSubscriptions()
+
+    const storedSettings = localStorage.getItem('dashboardSettings')
+    if (storedSettings) {
+      try {
+        setSettings(JSON.parse(storedSettings))
+      } catch {
+        localStorage.removeItem('dashboardSettings')
+      }
+    }
+  }, [isAuthenticated, navigate])
+
+  const saveSettings = (newSettings: typeof settings) => {
+    localStorage.setItem('dashboardSettings', JSON.stringify(newSettings))
+    setSettings(newSettings)
+  }
+
+  const fetchSubscriptions = async () => {
+    try {
+      setLoading(true)
+      setError('')
+
+      const response = await API.get('/subscriptions')
+      const loaded: Subscription[] = response.data.map((sub: any) => ({
+        ...sub,
+        reminderEnabled: sub.reminderEnabled ?? true,
+        reminderDaysBefore: sub.reminderDaysBefore ?? 7,
+      }))
+
+      setSubscriptions(loaded)
+    } catch (err) {
+      console.error(err)
+      setError('Failed to fetch subscriptions. Please try again.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const upsertSubscription = async (payload: Omit<Subscription, '_id' | 'createdAt' | 'updatedAt'>) => {
+    try {
+      setFormLoading(true)
+
+      if (editingSubscription) {
+        const response = await API.put(`/subscriptions/${editingSubscription._id}`, payload)
+        setSubscriptions((prev) => prev.map((sub) => (sub._id === editingSubscription._id ? response.data : sub)))
+      } else {
+        const response = await API.post('/subscriptions', payload)
+        setSubscriptions((prev) => [...prev, response.data])
+      }
+
+      setShowForm(false)
+      setEditingSubscription(null)
+    } catch (err) {
+      console.error(err)
+      setError('Unable to save subscription. Please try again.')
+    } finally {
+      setFormLoading(false)
+    }
+  }
+
+  const deleteSubscription = async (id: string) => {
+    if (!confirm('Delete this subscription?')) return
+
+    try {
+      await API.delete(`/subscriptions/${id}`)
+      setSubscriptions((prev) => prev.filter((s) => s._id !== id))
+    } catch (err) {
+      console.error(err)
+      setError('Unable to delete subscription.')
+    }
+  }
+
+  const exportSubscriptions = () => {
+    const data = JSON.stringify(subscriptions, null, 2)
+    const blob = new Blob([data], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `subscriptions-${Date.now()}.json`
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
+  }
+
+  const importSubscriptions = async (file: File) => {
+    const reader = new FileReader()
+    reader.onload = async () => {
+      try {
+        const parsed = JSON.parse(reader.result as string)
+        if (!Array.isArray(parsed)) throw new Error('Invalid file format')
+
+        const valid = parsed.every((item) =>
+          typeof item === 'object' &&
+          typeof item.name === 'string' &&
+          typeof item.frequency === 'string' &&
+          typeof item.price === 'number' &&
+          typeof item.nextPaymentDate === 'string' &&
+          typeof item.category === 'string'
+        )
+
+        if (!valid) throw new Error('Some entries are invalid')
+
+        const importedSubs = parsed.map((item: any) => ({
+          name: item.name,
+          frequency: item.frequency,
+          price: item.price,
+          nextPaymentDate: new Date(item.nextPaymentDate).toISOString(),
+          category: item.category,
+          user: item.user || 'local',
+          reminderEnabled: item.reminderEnabled ?? true,
+          reminderDaysBefore: item.reminderDaysBefore ?? 7,
+        }))
+
+        const createdItems = await Promise.all(
+          importedSubs.map((sub) => API.post('/subscriptions', sub).then((response) => response.data))
+        )
+
+        setSubscriptions((prev) => [...prev, ...createdItems])
+      } catch (err: any) {
+        console.error(err)
+        setError(`Import failed: ${err?.message || 'Invalid data'}`)
+      }
+    }
+    reader.readAsText(file)
+  }
+
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (file) {
+      importSubscriptions(file)
+      event.target.value = ''
+    }
+  }
+
+  const monthlyTotal = subscriptions.filter(s => s.frequency === 'monthly').reduce((sum, s) => sum + s.price, 0)
+  const yearlyTotal = subscriptions.filter(s => s.frequency === 'yearly').reduce((sum, s) => sum + s.price, 0)
+
+  const filteredSubscriptions = subscriptions
+    .filter((sub) => sub.name.toLowerCase().includes(searchQuery.toLowerCase()))
+    .filter((sub) => (filterCategory ? sub.category === filterCategory : true))
+    .filter((sub) => (filterFrequency ? sub.frequency === filterFrequency : true))
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-secondary mx-auto mb-3" />
+          <p className="text-lg font-medium text-text">Loading dashboard...</p>
+        </div>
+      </div>
+    )
+  }
+
+  const upcomingPayments = subscriptions
+    .map(sub => {
+      const diff = Math.ceil((new Date(sub.nextPaymentDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
+      return { ...sub, days: diff }
+    })
+    .filter(sub => {
+      if (!settings.paymentReminders) return false
+      if (!sub.reminderEnabled) return false
+      return sub.days >= 0 && sub.days <= (sub.reminderDaysBefore ?? 7)
+    })
+    .sort((a, b) => a.days - b.days)
+
+  return (
+    <div className="min-h-screen bg-background">
+      <div className="flex min-h-screen">
+        <aside className="w-72 bg-primary text-white border-r border-secondary">
+          <div className="p-6 border-b border-secondary">
+            <h1 className="text-2xl font-bold tracking-tight">ManageMySubs</h1>
+            <p className="text-sm text-accent mt-1">Organize your recurring costs</p>
+          </div>
+          <nav className="p-4 space-y-1">
+            {[
+              { id: 'dashboard' as SectionType, label: 'Dashboard', icon: FiBarChart2 },
+              { id: 'subscriptions' as SectionType, label: 'Subscriptions', icon: FiList },
+              { id: 'reports' as SectionType, label: 'Reports', icon: FiBarChart },
+              { id: 'settings' as SectionType, label: 'Settings', icon: FiSettings }
+            ].map(({ id, label, icon: Icon }) => (
+              <button
+                key={id}
+                onClick={() => setActiveSection(id)}
+                className={`w-full text-left px-4 py-3 rounded-lg flex items-center gap-3 transition ${
+                  activeSection === id
+                    ? 'bg-secondary text-white'
+                    : 'hover:bg-secondary hover:bg-opacity-20 text-white'
+                }`}
+              >
+                <Icon className="w-5 h-5" />
+                {label}
+              </button>
+            ))}
+          </nav>
+        </aside>
+
+        <div className="flex-1 flex flex-col">
+          <header className="flex items-center justify-between px-6 py-4 border-b border-secondary bg-white shadow-sm">
+            <div>
+              <h2 className="text-2xl font-semibold text-text">Welcome back</h2>
+              <p className="text-sm text-text">Start managing your subscriptions today.</p>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-full bg-background text-primary">
+                <FiBell className="w-5 h-5" />
+              </div>
+              <div className="p-2 rounded-full bg-accent bg-opacity-20 text-accent">
+                <FiUser className="w-5 h-5" />
+              </div>
+            </div>
+          </header>
+
+          <main className="flex-1 p-6 space-y-6">
+            {/* Dashboard Section */}
+            {activeSection === 'dashboard' && (
+              <>
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  <div className="bg-white border border-secondary rounded-2xl p-5 shadow">
+                    <p className="text-sm uppercase tracking-wide text-text">Monthly spend</p>
+                    <h3 className="text-3xl font-bold text-primary">${monthlyTotal.toFixed(2)}</h3>
+                  </div>
+                  <div className="bg-white border border-secondary rounded-2xl p-5 shadow">
+                    <p className="text-sm uppercase tracking-wide text-text">Yearly spend</p>
+                    <h3 className="text-3xl font-bold text-primary">${yearlyTotal.toFixed(2)}</h3>
+                  </div>
+                  <div className="bg-white border border-secondary rounded-2xl p-5 shadow">
+                    <p className="text-sm uppercase tracking-wide text-text">Upcoming payments</p>
+                    <h3 className="text-3xl font-bold text-accent">{upcomingPayments.length}</h3>
+                  </div>
+                </div>
+
+                <div className="mt-8 bg-white border border-secondary rounded-2xl p-5 shadow">
+                  <div className="flex flex-col md:flex-row gap-4 md:items-end md:justify-between">
+                    <div className="flex flex-col md:flex-row gap-3 md:items-center">
+                      <input
+                        type="text"
+                        placeholder="Search subscriptions..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="px-3 py-2 border border-secondary rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                      />
+                      <select
+                        value={filterCategory}
+                        onChange={(e) => setFilterCategory(e.target.value)}
+                        className="px-3 py-2 border border-secondary rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                      >
+                        <option value="">All Categories</option>
+                        <option value="general">General</option>
+                        <option value="entertainment">Entertainment</option>
+                        <option value="productivity">Productivity</option>
+                        <option value="health">Health & Fitness</option>
+                        <option value="finance">Finance</option>
+                        <option value="education">Education</option>
+                        <option value="utilities">Utilities</option>
+                      </select>
+                      <select
+                        value={filterFrequency}
+                        onChange={(e) => setFilterFrequency(e.target.value)}
+                        className="px-3 py-2 border border-secondary rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                      >
+                        <option value="">All Cycles</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="yearly">Yearly</option>
+                      </select>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <button
+                        type="button"
+                        onClick={exportSubscriptions}
+                        className="px-4 py-2 bg-accent text-white rounded-lg hover:bg-accent hover:bg-opacity-90 transition"
+                      >
+                        Export
+                      </button>
+                      <label className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-secondary cursor-pointer transition">
+                        Import
+                        <input type="file" accept="application/json" className="hidden" onChange={handleFileUpload} />
+                      </label>
+                    </div>
+                  </div>
+                  <p className="text-sm text-text mt-3">Showing {filteredSubscriptions.length} of {subscriptions.length} subscriptions</p>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  <section className="lg:col-span-2 bg-white rounded-2xl border border-secondary shadow">
+                    <div className="px-6 py-5 border-b border-secondary flex items-center justify-between">
+                      <h3 className="text-xl font-semibold">Recent Subscriptions</h3>
+                      <button onClick={() => { setEditingSubscription(null); setShowForm(true)}} className="inline-flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg hover:bg-secondary transition">
+                        <FiPlus className="w-4 h-4" />
+                        <span>Add Subscription</span>
+                      </button>
+                    </div>
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-left text-sm">
+                        <thead className="bg-background">
+                          <tr>
+                            <th className="p-4 text-text">Service</th>
+                            <th className="p-4 text-text">Amount</th>
+                            <th className="p-4 text-text">Cycle</th>
+                            <th className="p-4 text-text">Next Payment</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {filteredSubscriptions.slice(0, 5).map(sub => (
+                            <tr key={sub._id} className="border-b border-secondary hover:bg-background">
+                              <td className="p-4 font-medium">{sub.name}</td>
+                              <td className="p-4">${sub.price.toFixed(2)}</td>
+                              <td className="p-4 capitalize">{sub.frequency}</td>
+                              <td className="p-4">{new Date(sub.nextPaymentDate).toLocaleDateString()}</td>
+                            </tr>
+                          ))}
+                          {filteredSubscriptions.length === 0 && (
+                            <tr>
+                              <td colSpan={4} className="p-4 text-center text-text">No subscriptions found.</td>
+                            </tr>
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                  </section>
+
+                  <aside className="bg-white rounded-2xl border border-secondary shadow p-6">
+                    <h3 className="text-xl font-semibold mb-4 text-text">Upcoming Payment Alerts</h3>
+                    <div className="space-y-3">
+                      {upcomingPayments.length === 0 ? (
+                        <p className="text-sm text-text">No upcoming payments within 10 days.</p>
+                      ) : upcomingPayments.map(sub => (
+                        <div key={sub._id} className="rounded-lg border border-accent border-opacity-30 p-3 bg-accent bg-opacity-10 text-sm">
+                          <p className="font-medium text-text">{sub.name}</p>
+                          <p className="text-text">Due in {sub.days} day{sub.days === 1 ? '' : 's'} - ${sub.price.toFixed(2)}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </aside>
+                </div>
+              </>
+            )}
+
+            {/* Subscriptions Section */}
+            {activeSection === 'subscriptions' && (
+              <div className="bg-white rounded-2xl border border-secondary shadow">
+                <div className="px-6 py-5 border-b border-secondary flex items-center justify-between">
+                  <h3 className="text-2xl font-semibold">All Subscriptions</h3>
+                  <button onClick={() => { setEditingSubscription(null); setShowForm(true)}} className="inline-flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg hover:bg-secondary transition">
+                    <FiPlus className="w-4 h-4" />
+                    <span>Add Subscription</span>
+                  </button>
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-sm">
+                    <thead className="bg-background">
+                      <tr>
+                        <th className="p-4 text-text">Service</th>
+                        <th className="p-4 text-text">Amount</th>
+                        <th className="p-4 text-text">Cycle</th>
+                        <th className="p-4 text-text">Next Payment</th>
+                        <th className="p-4 text-text">Status</th>
+                        <th className="p-4 text-text">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredSubscriptions.map(sub => {
+                        const days = Math.ceil((new Date(sub.nextPaymentDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
+                        const reminderWindow = sub.reminderEnabled ? sub.reminderDaysBefore ?? 7 : -1
+                        const remNext = sub.reminderEnabled && days >= 0 && days <= reminderWindow
+                        const status = remNext ? 'Reminder due' : days <= 7 ? 'Due soon' : 'Active'
+                        const statusColor = remNext ? 'bg-red-100 text-red-700' : days <= 7 ? 'bg-amber-100 text-amber-700' : 'bg-accent bg-opacity-20 text-accent'
+                        return (
+                          <tr key={sub._id} className="border-b border-secondary hover:bg-background">
+                            <td className="p-4 font-medium">{sub.name}</td>
+                            <td className="p-4">${sub.price.toFixed(2)}</td>
+                            <td className="p-4 capitalize">{sub.frequency}</td>
+                            <td className="p-4">{new Date(sub.nextPaymentDate).toLocaleDateString()}</td>
+                            <td className="p-4"><span className={`px-2 py-1 rounded-full text-xs ${statusColor}`}>{status}</span></td>
+                            <td className="p-4 space-x-2">
+                              <button onClick={() => { setEditingSubscription(sub); setShowForm(true)}} className="text-primary hover:text-secondary">Edit</button>
+                              <button onClick={() => deleteSubscription(sub._id)} className="text-red-600 hover:text-red-800">Delete</button>
+                            </td>
+                          </tr>
+                        )
+                      })}
+                      {filteredSubscriptions.length === 0 && (
+                        <tr>
+                          <td colSpan={6} className="p-4 text-center text-text">No subscriptions to display.</td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+
+            {/* Reports Section */}
+            {activeSection === 'reports' && (
+              <div className="space-y-6">
+                <h2 className="text-2xl font-semibold text-text">Reports & Analytics</h2>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <div className="bg-white rounded-2xl border border-secondary shadow p-6">
+                    <h3 className="text-lg font-semibold mb-4 text-text">Spending Summary</h3>
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center pb-3 border-b border-secondary">
+                        <span className="text-text">Total Monthly</span>
+                        <span className="text-xl font-bold text-primary">${monthlyTotal.toFixed(2)}</span>
+                      </div>
+                      <div className="flex justify-between items-center pb-3 border-b border-secondary">
+                        <span className="text-text">Total Yearly</span>
+                        <span className="text-xl font-bold text-primary">${(monthlyTotal * 12 + yearlyTotal).toFixed(2)}</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-text">Annual Recurring</span>
+                        <span className="text-xl font-bold text-primary">${yearlyTotal.toFixed(2)}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-white rounded-2xl border border-secondary shadow p-6">
+                    <h3 className="text-lg font-semibold mb-4 text-text">Subscription Categories</h3>
+                    <div className="space-y-3">
+                      {Array.from(new Set(subscriptions.map(s => s.category))).map(category => {
+                        const categoryTotal = subscriptions
+                          .filter(s => s.category === category)
+                          .reduce((sum, s) => sum + (s.frequency === 'monthly' ? s.price : s.price / 12), 0)
+                        return (
+                          <div key={category} className="flex justify-between items-center">
+                            <span className="text-text capitalize">{category}</span>
+                            <span className="font-medium text-text">${categoryTotal.toFixed(2)}/mo</span>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Settings Section */}
+            {activeSection === 'settings' && (
+              <div className="space-y-6">
+                <h2 className="text-2xl font-semibold text-text">Settings</h2>
+                <div className="bg-white rounded-2xl border border-secondary shadow p-6">
+                  <h3 className="text-lg font-semibold mb-6 text-text">Preferences</h3>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between pb-4 border-b border-secondary">
+                      <label className="text-text">Email notifications</label>
+                      <input
+                        type="checkbox"
+                        checked={settings.emailNotifications}
+                        onChange={(e) => saveSettings({ ...settings, emailNotifications: e.target.checked })}
+                        className="w-4 h-4"
+                      />
+                    </div>
+                    <div className="flex items-center justify-between pb-4 border-b border-secondary">
+                      <label className="text-text">Payment reminders</label>
+                      <input
+                        type="checkbox"
+                        checked={settings.paymentReminders}
+                        onChange={(e) => saveSettings({ ...settings, paymentReminders: e.target.checked })}
+                        className="w-4 h-4"
+                      />
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <label className="text-text">Weekly reports</label>
+                      <input
+                        type="checkbox"
+                        checked={settings.weeklyReports}
+                        onChange={(e) => saveSettings({ ...settings, weeklyReports: e.target.checked })}
+                        className="w-4 h-4"
+                      />
+                    </div>
+                  </div>
+                  <div className="mt-4">
+                    <button
+                      className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-secondary transition"
+                      onClick={() => {
+                        setSettingsSaved(true)
+                        setTimeout(() => setSettingsSaved(false), 1400)
+                      }}
+                    >
+                      Save preferences
+                    </button>
+                    {settingsSaved && <span className="text-sm text-green-600 ml-3">Saved!</span>}
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-2xl border border-secondary shadow p-6">
+                  <h3 className="text-lg font-semibold mb-6 text-text">Account</h3>
+                  <button
+                    onClick={() => logout()}
+                    className="inline-flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition"
+                  >
+                    Logout
+                  </button>
+                </div>
+              </div>
+            )}
+          </main>
+        </div>
+      </div>
+
+      {showForm && (
+        <SubscriptionForm
+          subscription={editingSubscription || undefined}
+          onCancel={() => { setShowForm(false); setEditingSubscription(null)}}
+          onSubmit={upsertSubscription}
+          isLoading={formLoading}
+        />
+      )}
+
+      {error && (
+        <div className="fixed bottom-6 right-6 bg-red-600 text-white px-4 py-3 rounded-lg shadow-lg">
+          {error}
+          <button className="ml-4 text-white font-bold" onClick={() => setError('')}>×</button>
+        </div>
+      )}
+    </div>
+  )
+}
+
+export default Dashboard

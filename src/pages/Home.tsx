@@ -1,0 +1,120 @@
+import { Link } from 'react-router-dom'
+import { FiBarChart2, FiClock, FiSmartphone, FiTag, FiDollarSign, FiLock, FiArrowRight } from 'react-icons/fi'
+
+function Home() {
+  return (
+    <div className="min-h-screen">
+      {/* Hero Section */}
+      <section className="bg-gradient-to-br from-primary to-secondary text-white py-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-5xl md:text-6xl font-bold mb-6">
+            Take Control of Your
+            <span className="block text-accent">Subscriptions</span>
+          </h1>
+          <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto opacity-90">
+            Track, manage, and optimize all your subscriptions in one beautiful dashboard.
+            Never miss a payment or overspend again.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              to="/register"
+              className="bg-white text-primary px-8 py-3 rounded-lg font-semibold hover:bg-background transition-colors flex items-center gap-2 justify-center"
+            >
+              Get Started <FiArrowRight />
+            </Link>
+            <Link
+              to="/login"
+              className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-primary transition-colors flex items-center gap-2 justify-center"
+            >
+              Sign In
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="py-20 bg-background">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Everything You Need to Manage Subscriptions
+            </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Powerful features designed to help you stay on top of your subscription spending.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-primary border-opacity-20">
+              <div className="text-4xl mb-4 text-accent"><FiBarChart2 /></div>
+              <h3 className="text-xl font-semibold mb-3">Expense Tracking</h3>
+              <p className="text-gray-600">
+                Monitor your monthly and yearly subscription costs with detailed analytics and insights.
+              </p>
+            </div>
+
+            <div className="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-primary border-opacity-20">
+              <div className="text-4xl mb-4 text-accent"><FiClock /></div>
+              <h3 className="text-xl font-semibold mb-3">Payment Reminders</h3>
+              <p className="text-gray-600">
+                Get notified before payments are due so you never miss a subscription renewal.
+              </p>
+            </div>
+
+            <div className="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-primary border-opacity-20">
+              <div className="text-4xl mb-4 text-accent"><FiSmartphone /></div>
+              <h3 className="text-xl font-semibold mb-3">Mobile Friendly</h3>
+              <p className="text-gray-600">
+                Access your subscription dashboard anywhere with our responsive mobile design.
+              </p>
+            </div>
+
+            <div className="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-primary border-opacity-20">
+              <div className="text-4xl mb-4 text-accent"><FiTag /></div>
+              <h3 className="text-xl font-semibold mb-3">Category Organization</h3>
+              <p className="text-gray-600">
+                Organize subscriptions by categories like Entertainment, Productivity, and Health.
+              </p>
+            </div>
+
+            <div className="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-primary border-opacity-20">
+              <div className="text-4xl mb-4 text-accent"><FiDollarSign /></div>
+              <h3 className="text-xl font-semibold mb-3">Cost Analysis</h3>
+              <p className="text-gray-600">
+                Understand your spending patterns and identify opportunities to save money.
+              </p>
+            </div>
+
+            <div className="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-primary border-opacity-20">
+              <div className="text-4xl mb-4 text-accent"><FiLock /></div>
+              <h3 className="text-xl font-semibold mb-3">Secure & Private</h3>
+              <p className="text-gray-600">
+                Your subscription data is encrypted and secure. We never share your information.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="bg-primary text-white py-16">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            Ready to Take Control?
+          </h2>
+          <p className="text-xl mb-8 opacity-90">
+            Join thousands of users who are already managing their subscriptions smarter.
+          </p>
+          <Link
+            to="/register"
+            className="bg-white text-primary px-8 py-3 rounded-lg font-semibold hover:bg-background transition-colors inline-block"
+          >
+            Start Managing Today
+          </Link>
+        </div>
+      </section>
+    </div>
+  )
+}
+
+export default Home

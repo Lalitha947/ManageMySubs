@@ -1,0 +1,124 @@
+import React, { createContext, useState, useContext, useEffect } from 'react'
+import API from '../services/api'
+
+interface User {
+  id: string
+  email: string
+  name?: string
+}
+
+interface StoredUser extends User {
+  password: string
+}
+
+interface AuthContextType {
+  user: User | null
+  isAuthenticated: boolean
+  isLoading: boolean
+  login: (email: string, password: string) => Promise<void>
+  logout: () => void
+  register: (name: string, email: string, password: string) => Promise<void>
+}
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined)
+
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const [user, setUser] = useState<User | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+
+  // Check if user is logged in on mount
+  useEffect(() => {
+    const token = localStorage.getItem('authToken')
+    const savedUser = localStorage.getItem('user')
+    if (token && savedUser) {
+      try {
+        setUser(JSON.parse(savedUser))
+      } catch {
+        localStorage.removeItem('authToken')
+        localStorage.removeItem('user')
+      }
+    }
+    setIsLoading(false)
+  }, [])
+
+  const login = async (email: string, password: string) => {
+    if (!email.trim() || !password) {
+      throw new Error('Email and password are required')
+    }
+
+    const response = await API.post('/auth/login', { email, password })
+    const { token, user: loggedInUser } = response.data
+
+    if (!token || !loggedInUser) {
+      throw new Error('Authentication failed')
+    }
+
+    const userObj: User = {
+      id: loggedInUser.id,
+      email: loggedInUser.email,
+      name: loggedInUser.name,
+    }
+
+    localStorage.setItem('authToken', token)
+    localStorage.setItem('user', JSON.stringify(userObj))
+    setUser(userObj)
+  }
+
+  const register = async (name: string, email: string, password: string) => {
+    if (!name.trim() || !email.trim() || !password) {
+      throw new Error('All fields are required')
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      throw new Error('Invalid email address')
+    }
+    if (password.length < 6) {
+      throw new Error('Password must be at least 6 characters')
+    }
+
+    const response = await API.post('/auth/register', { name, email, password })
+    const { token, user: registeredUser } = response.data
+
+    if (!token || !registeredUser) {
+      throw new Error('Registration failed')
+    }
+
+    const userObj: User = {
+      id: registeredUser.id,
+      email: registeredUser.email,
+      name: registeredUser.name,
+    }
+
+    localStorage.setItem('authToken', token)
+    localStorage.setItem('user', JSON.stringify(userObj))
+    setUser(userObj)
+  }
+
+  const logout = () => {
+    localStorage.removeItem('authToken')
+    localStorage.removeItem('user')
+    setUser(null)
+  }
+
+  return (
+    <AuthContext.Provider
+      value={{
+        user,
+        isAuthenticated: !!user,
+        isLoading,
+        login,
+        logout,
+        register,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  )
+}
+
+export function useAuth() {
+  const context = useContext(AuthContext)
+  if (context === undefined) {
+    throw new Error('useAuth must be used within AuthProvider')
+  }
+  return context
+}
